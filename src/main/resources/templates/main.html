@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Homepage</title>
+  <!-- 부트스트랩 링크 추가 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Sandwich AI</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <!-- 로그인 상태에 따라 네비게이션 바의 내용을 동적으로 생성 -->
+      <li class="nav-item" th:if="${isLoggedIn}">
+        <a class="nav-link" href="http://localhost:8081/auth/info">회원 정보</a>
+      </li>
+      <li class="nav-item" th:if="${isLoggedIn}">
+        <a class="nav-link" href="http://localhost:8081/auth/logout">로그아웃</a>
+      </li>
+      <li class="nav-item" th:unless="${isLoggedIn}">
+        <a class="nav-link" href="http://localhost:8081/auth/login">로그인</a>
+      </li>
+      <li class="nav-item">
+        <a id="inspectionLink", class="nav-link" href="#">날짜별 검수 결과 확인</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- 본문 -->
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1>차량 검수</h1>
+      <p>차량 검수에 관한 내용을 이곳에 추가하세요.</p>
+      <a href="/api/inspection" class="btn btn-primary">차량 검수 시작</a>
+    </div>
+  </div>
+</div>
+
+<!-- 부트스트랩 자바스크립트 및 제이쿼리 스크립트 추가 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // 현재 날짜를 가져오는 함수
+  function getCurrentDate() {
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+    var day = today.getDate();
+
+    // 월과 일이 한 자리 수인 경우 앞에 0을 추가하여 두 자리로 만듦
+    if (month < 10) {
+      month = '0' + month;
+    }
+    if (day < 10) {
+      day = '0' + day;
+    }
+
+    return year + '-' + month + '-' + day;
+  }
+
+  // 현재 날짜를 기본값으로 가지고 있는 URL을 생성하여 링크에 적용하는 함수
+  function setDefaultDateUrl() {
+    var currentDate = getCurrentDate();
+    var inspectionLink = document.getElementById('inspectionLink');
+    inspectionLink.href = '/api/report/' + currentDate;
+  }
+
+  // 페이지 로드 시 기본값으로 가지고 있는 URL을 설정함
+  window.onload = function() {
+    setDefaultDateUrl();
+  };
+</script>
+
+</body>
+</html>
